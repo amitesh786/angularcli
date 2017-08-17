@@ -1,17 +1,25 @@
 
 <div>
+  <div>
+    <iframe width="100%" height= "300" [src]="video.url | safe">
+    </iframe>
+  </div>
   <form>
-    <div class="form-group">
-       <input type="input" class="form-control" name="title" required placeholder="Title" ng-model= "video.title">
+    <h1>Details</h1>
+    <div *ngIf="editTitle" class="form-group">
+       <input type="text" class="form-control" required ng-model="video.title">
     </div>
+    <h3 *ngIf="!editTitle" (click)="onTitleClick()" >{{video.title}}</h3>
 
-    <div class="form-group">
-      <input type="input" class="form-control" name="url" required placeholder="Url" ng-model = "video.url">
+    <div *ngIf="editUrl" class="form-group">
+      <input type="text" class="form-control" required ng-model="video.url">
     </div>
+    <h3 *ngIf="!editUrl" (click)="onUrlClick()" >{{video.url}}</h3>
     
-    <div class="form-group">
-      <textarea class="form-control" rows="5" name="desc" ng-model = "video.description"></textarea>
+    <div *ngIf="editDesc" class="form-group">
+      <textarea class="form-control" rows="4" ng-model="video.description"></textarea>
     </div>
+    <h3 *ngIf="!editDesc" (click)="onDescClick()" >{{video.description}}</h3>
   
   </form>
 </div> 
