@@ -20,6 +20,8 @@
       <textarea class="form-control" rows="4" ng-model="video.description"></textarea>
     </div>
     <h3 *ngIf="!editDesc" (click)="onDescClick()" >{{video.description}}</h3>
-  
+    
+    <button type="button" (click)="updateVideo()" class="btn btn-primary">Update</button>
+    <button type="button" (click)="deleteVideo()" class="btn btn-danger">Delete</button>
   </form>
 </div> 

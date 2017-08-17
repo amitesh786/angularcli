@@ -10,26 +10,52 @@ import { VideoService } from './../video.service';
 })
 export class VideoCenterComponent implements OnInit {
 
-  // videos: Video[] = [
-  //   {"_id": "1", "title": "Title 1", "url": "Url 1", "description": "Description 1"},
-  //   {"_id": "2", "title": "Title 2", "url": "Url 2", "description": "Description 2"},
-  //   {"_id": "3", "title": "Title 3", "url": "Url 3", "description": "Description 3"},
-  //   {"_id": "4", "title": "Title 4", "url": "Url 4", "description": "Description 4"}
-  // ];
   videos: Array<Video>;
-
   selectedVideo: Video;
-
+  private hiddenVideo: boolean = true;
   constructor(private _videoService: VideoService) { }
 
   ngOnInit() {
     this._videoService.getVideos()
     .subscribe(resVideoData => this.videos = resVideoData);
-  }
+  };
 
   onSelectVideo(video:any) {
     this.selectedVideo = video;
+    this.hiddenVideo = true;
     console.log(this.selectedVideo);
-  }
+  };
+
+  onSubmitAddVideo(video: Video) {
+    this._videoService.addVideo(video)
+      .subscribe(resNewVideo => {
+        this.videos.push(resNewVideo);
+        this.hiddenVideo = true;
+        this.selectedVideo = resNewVideo;
+      });   
+  };
+
+  onUpdateVideoEvent(video: any) {
+    this._videoService.updateVideo(video)
+      .subscribe(resUpdatedVideo => video = resUpdatedVideo);
+      this.selectedVideo = null;
+  };
+
+  onDeleteVideoEvent(video: any) {
+    let videoArray = this.videos;
+    this._videoService.deleteVideo(video)
+      .subscribe(resUpdatedVideo => {
+        for (let i=0; i<videoArray.length; i++) {
+          if (videoArray[i] === video._id) {
+            videoArray.splice(i,1);
+          }
+        }
+      });
+      this.selectedVideo = null;
+  };
+
+  newVideo() {
+    this.hiddenVideo = false;
+  };
 
 }
